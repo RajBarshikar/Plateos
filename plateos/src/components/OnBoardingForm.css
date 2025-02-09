@@ -1,4 +1,4 @@
-/* OnBoardingForm.css */
+/* ========== Root Variables ========== */
 :root {
   --primary-color: #6366f1;
   --primary-light: rgba(99, 102, 241, 0.1);
@@ -9,49 +9,53 @@
   --success-color: #10b981;
 }
 
+/* ========== Form Wrapper ========== */
 .form-wrapper {
   max-width: 480px;
   margin: 0 auto;
   width: 100%;
 }
 
-.form-input {
-  width: 100%;
+/* ========== Input Fields ========== */
+.form-input, 
+.form-select {
+  width: 80%;
   padding: 1rem;
   border: 2px solid var(--border-color);
   border-radius: 0.75rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
-.form-input:focus {
+.form-input {
+  
+  margin-bottom: 1rem;
+}
+
+.form-input:focus, 
+.form-select:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .form-select {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 0.75rem;
   background-color: white;
-  font-size: 1rem;
   cursor: pointer;
 }
 
-.age-container,
-.height-container,
-.weight-container,
+/* ========== Age, Height, Weight, Meals Section ========== */
+.age-container, 
+.height-container, 
+.weight-container, 
 .meals-container {
   text-align: center;
   padding: 2rem 0;
 }
 
-.age-display,
-.height-display,
-.weight-display,
+.age-display, 
+.height-display, 
+.weight-display, 
 .meals-display {
   font-size: 3.5rem;
   font-weight: 700;
@@ -59,6 +63,7 @@
   margin-bottom: 2rem;
 }
 
+/* ========== Range Sliders ========== */
 .slider-container {
   padding: 0 1rem;
   margin: 2rem 0;
@@ -85,7 +90,8 @@ input[type="range"]::-webkit-slider-thumb {
   transition: all 0.2s ease;
 }
 
-.gender-grid,
+/* ========== Gender & Diet Selection ========== */
+.gender-grid, 
 .diet-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -93,7 +99,7 @@ input[type="range"]::-webkit-slider-thumb {
   margin: 1rem 0;
 }
 
-.gender-button,
+.gender-button, 
 .diet-button {
   padding: 2rem 1rem;
   border: 2px solid var(--border-color);
@@ -103,18 +109,19 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-.gender-button.selected,
+.gender-button.selected, 
 .diet-button.selected {
   border-color: var(--primary-color);
   background: var(--primary-light);
 }
 
-.gender-emoji,
+.gender-emoji, 
 .diet-emoji {
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
+/* ========== Activity Selection ========== */
 .activity-list {
   display: flex;
   flex-direction: column;
@@ -146,6 +153,7 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--text-secondary);
 }
 
+/* ========== Medical Condition Selection ========== */
 .medical-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -166,6 +174,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: var(--background-light);
 }
 
+/* ========== Unit Selection ========== */
 .unit-toggle {
   display: flex;
   justify-content: center;
@@ -186,13 +195,14 @@ input[type="range"]::-webkit-slider-thumb {
   color: white;
 }
 
+/* ========== Responsive Styles ========== */
 @media (max-width: 640px) {
   .medical-list {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 
-  .gender-grid,
+  .gender-grid, 
   .diet-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
