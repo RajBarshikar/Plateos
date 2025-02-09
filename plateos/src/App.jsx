@@ -1,12 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import AppRouter from './routes/AppRouter'
-import { auth } from './firebase/firebase'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { FormProvider } from './context/FormContext';
+import LandingPage from './components/LandingPage';
+import LoginPage from './components/LoginPage';
+import OnBoardingForm from './components/OnBoardingForm';
+import HomePage from './components/HomePage';
 
-export default function App() {
+function App() {
   return (
-    <AppRouter />
-  )
+    <FormProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<OnBoardingForm />} />
+          <Route path="/home" element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
+    </FormProvider>
+  );
 }
+
+export default App;

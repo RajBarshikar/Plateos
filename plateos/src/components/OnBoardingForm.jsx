@@ -16,12 +16,13 @@ function OnboardingForm() {
   const handleBack = () => setCurrentStep((prev) => prev - 1)
 
   const handleSubmit = async () => {
-    try {
-      await createUser(email, password, formData)
-    } catch (error) {
-      console.error("Error creating user:", error)
-    }
+  try {
+    await createUser(email, password, formData);
+    navigate('/login'); // Add this line
+  } catch (error) {
+    console.error("Error creating user:", error);
   }
+};
 
   const renderStep = () => {
     switch (currentStep) {
