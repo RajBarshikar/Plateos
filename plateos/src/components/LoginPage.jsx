@@ -1,23 +1,37 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUser } from '../firebase/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/firebase';
 import './LoginPage.css';
 
 function LoginPage() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await createUser(email, password);
-      navigate('/home');
-    } catch (error) {
-      setError('Invalid email or password');
-    }
-  };
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+  
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        navigate('/home');
+      } catch (error) {
+        console.error("Login error:", error.code);
+        switch (error.code) {
+          case 'auth/user-not-found':
+            setError('No account exists with this email');
+            break;
+          case 'auth/wrong-password':
+            setError('Incorrect password');
+            break;
+          case 'auth/invalid-email':
+            setError('Invalid email format');
+            break;
+          default:
+            setError('Failed to login. Please try again.');
+        }
+      }
+    };
 
   return (
     <div className="login-container">

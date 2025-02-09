@@ -16,13 +16,21 @@ function OnboardingForm() {
   const handleBack = () => setCurrentStep((prev) => prev - 1)
 
   const handleSubmit = async () => {
-  try {
-    await createUser(email, password, formData);
-    navigate('/login'); // Add this line
-  } catch (error) {
-    console.error("Error creating user:", error);
-  }
-};
+    try {
+      if (!email || !password) {
+        throw new Error("Email and password are required");
+      }
+      if (password.length < 6) {
+        throw new Error("Password should be at least 6 characters");
+      }
+      await createUser(email, password, formData);
+      navigate('/login'); // Add navigation after successful signup
+    } catch (error) {
+      console.error("Error creating user:", error);
+      // Add error state and display to user
+      setError(error.message);
+    }
+  };
 
   const renderStep = () => {
     switch (currentStep) {

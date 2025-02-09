@@ -15,22 +15,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const db = getFirestore(app)
+auth.useDeviceLanguage(); // Add this line
 
 export const createUser = async (email, password, userData) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    const user = userCredential.user
-
-    // Store additional user data in Firestore
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    
+    // Add user data to Firestore
     await setDoc(doc(db, "users", user.uid), {
       ...userData,
-      email,
-      createdAt: new Date().toISOString(),
-    })
+      createdAt: serverTimestamp(),
+    });
 
-    return user
+    return user;
   } catch (error) {
-    throw error
+    console.error("Error in createUser:", error.code, error.message);
+    throw error;
   }
-}
+};
 
