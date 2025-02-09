@@ -62,7 +62,7 @@ function LoginPage() {
         </form>
 
         <p className="login-footer">
-          Don't have an account?{' '}
+          Don't have an account?{''}
           <button 
             className="login-link"
             onClick={() => navigate('/signup')}

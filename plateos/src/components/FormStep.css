@@ -20,7 +20,9 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Centers content vertically */
 }
+
 
 .form-step-inner {
     width: 92%;
@@ -30,6 +32,9 @@ body, html {
     border-radius: 1.5rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
 }
 
 .form-step-inner:hover {
@@ -75,7 +80,13 @@ body, html {
 .step-content {
     flex: 1;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers form fields */
+    justify-content: center; /* Ensures proper vertical alignment */
+    
 }
+
 
 .step-navigation {
     display: flex;
@@ -95,6 +106,7 @@ body, html {
     transition: all 0.2s ease;
     text-decoration: none;
     cursor: pointer;
+    text-align: center;
 }
 
 /* Back Button */
