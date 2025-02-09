@@ -3,7 +3,10 @@
 import { useState } from "react"
 import { useForm } from "../context/FormContext"
 import { createUser } from "../firebase/firebase"
+import { useNavigate } from "react-router-dom"
 import FormStep from "./FormStep"
+import { updateUserProfile } from "../firebase/firebase"
+import { calculateGoalCalories } from '../utils/calorieCalculator';
 import './OnBoardingForm.css'
 
 function OnboardingForm() {
@@ -11,24 +14,115 @@ function OnboardingForm() {
   const { formData, updateFormData } = useForm()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("");
 
-  const handleNext = () => setCurrentStep((prev) => prev + 1)
+  const handleNext = async () => {
+    if (currentStep === 1) {
+      // Validate first step inputs
+      if (!email || !password || !formData.name) {
+        setError("Please fill in all fields");
+        return;
+      }
+      if (password.length < 6) {
+        setError("Password should be at least 6 characters");
+        return;
+      }
+
+      try {
+        // Create user on first step
+        const user = await createUser(email, password);
+        setCurrentStep((prev) => prev + 1);
+      } catch (error) {
+        console.error("Error creating user:", error);
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            setError('Email already exists');
+            break;
+          case 'auth/invalid-email':
+            setError('Invalid email format');
+            break;
+          default:
+            setError('Failed to create account. Please try again.');
+        }
+        return;
+      }
+    } else {
+      setCurrentStep((prev) => prev + 1);
+    }
+  }
+
   const handleBack = () => setCurrentStep((prev) => prev - 1)
 
   const handleSubmit = async () => {
     try {
-      if (!email || !password) {
-        throw new Error("Email and password are required");
+      if (!email || !formData.name) {
+        throw new Error("Email and name are required");
       }
-      if (password.length < 6) {
-        throw new Error("Password should be at least 6 characters");
-      }
-      await createUser(email, password, formData);
-      navigate('/login'); // Add navigation after successful signup
+
+      // Convert height and weight to proper units for calculation
+      const heightInCm = formData.height.unit === "cm" 
+        ? formData.height.value 
+        : formData.height.value * 2.54; // Convert inches to cm
+
+      const weightInKg = formData.weight.unit === "kg" 
+        ? formData.weight.value 
+        : formData.weight.value * 0.453592; // Convert lbs to kg
+
+      // Prepare data for calorie calculation
+      const calculationData = {
+        weight: weightInKg,
+        height: heightInCm,
+        age: formData.age,
+        gender: formData.gender,
+        activityLevel: formData.activityLevel,
+        goal: formData.goalWeight.value > 0 ? 'gain' : 'lose'
+      };
+
+      // Calculate calorie goals
+      const calorieGoals = calculateGoalCalories(calculationData);
+
+      // Prepare the final user data with calculated goals
+      const finalUserData = {
+        ...formData,
+        goalCalories: calorieGoals.totalCalories,
+        mealGoals: {
+          breakfast: calorieGoals.mealCalories.breakfast,
+          morningSnack: calorieGoals.mealCalories.morningSnack,
+          lunch: calorieGoals.mealCalories.lunch,
+          eveningSnack: calorieGoals.mealCalories.eveningSnack,
+          dinner: calorieGoals.mealCalories.dinner
+        },
+        macroGoals: {
+          // Calculate macro goals based on total calories
+          protein: Math.round((calorieGoals.totalCalories * 0.3) / 4), // 30% of calories from protein (4 cal/g)
+          carbs: Math.round((calorieGoals.totalCalories * 0.45) / 4),  // 45% of calories from carbs (4 cal/g)
+          fats: Math.round((calorieGoals.totalCalories * 0.25) / 9),   // 25% of calories from fats (9 cal/g)
+          fiber: Math.round(calorieGoals.totalCalories / 1000 * 14)    // 14g per 1000 calories
+        },
+        dailyMeals: {
+          breakfast: { consumed: 0, foods: [] },
+          morningSnack: { consumed: 0, foods: [] },
+          lunch: { consumed: 0, foods: [] },
+          eveningSnack: { consumed: 0, foods: [] },
+          dinner: { consumed: 0, foods: [] }
+        },
+        macros: {
+          protein: 0,
+          carbs: 0,
+          fats: 0,
+          fiber: 0
+        },
+        totalConsumed: 0,
+        createdAt: new Date().toISOString(),
+        lastUpdated: new Date().toISOString()
+      };
+
+      // Update user profile in Firebase
+      await updateUserProfile(email, finalUserData);
+      navigate('/login');
     } catch (error) {
-      console.error("Error creating user:", error);
-      // Add error state and display to user
-      setError(error.message);
+      console.error("Error updating profile:", error);
+      setError(error.message || "Failed to update profile");
     }
   };
 
