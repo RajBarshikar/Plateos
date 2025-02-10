@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useForm } from "../context/FormContext"
 import { createUser } from "../firebase/firebase"
+import { useNavigate } from "react-router-dom";
 import FormStep from "./FormStep"
 import './OnBoardingForm.css'
 
@@ -11,8 +12,9 @@ function OnboardingForm() {
   const { formData, updateFormData } = useForm()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate();
   const [error, setError] = useState(null); // Added error state
-  const router = useRouter(); 
+  //const router = useRouter(); 
 
   const handleNext = () => setCurrentStep((prev) => prev + 1)
   const handleBack = () => setCurrentStep((prev) => prev - 1)
