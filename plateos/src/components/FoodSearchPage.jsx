@@ -84,8 +84,9 @@ function FoodSearchPage() {
           onChange={(e) => setFoodInput(e.target.value)}
           placeholder="Enter food and quantity (e.g., 2 slices of wheat bread)"
           disabled={loading}
+          className="search-box"
         />
-        <button type="submit" disabled={loading || !foodInput.trim()}>
+        <button className="btnofanalyze" type="submit" disabled={loading || !foodInput.trim()}>
           {loading ? 'Analyzing...' : 'Analyze'}
         </button>
       </form>

@@ -56,10 +56,10 @@
 }
 
 .add-button {
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 42px;
   border-radius: 50%;
-  background: #ff6b00;
+  background: #FF6B6B;
   color: white;
   border: none;
   font-size: 20px;
