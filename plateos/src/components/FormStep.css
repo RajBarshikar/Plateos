@@ -1,21 +1,28 @@
 /* FormStep.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 :root {
-    --primary-color: #6366f1; /* Default primary color */
+    --primary-color: #FF6B6B; /* Default primary color */
 }
 
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+
 body, html {
-    background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+    background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
     color: #333;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .form-step-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+    background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
     padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
@@ -61,7 +68,7 @@ body, html {
 /* Typography */
 .step-title {
     font-size: 1.75rem;
-    font-weight: 700;
+    font-weight: 600;
     text-align: center;
     margin-bottom: 0.75rem;
     color: #1e293b;
@@ -124,9 +131,9 @@ body, html {
 
 /* Next Button */
 .next-button {
-    background: linear-gradient(90deg, var(--primary-color) 0%, #4f46e5 100%);
+    background: linear-gradient(90deg, var(--primary-color) 0%, #7069fa 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    
 }
 
 .next-button:hover {
